@@ -2,3 +2,4 @@ gradio
 langchain
 chromadb
 sentence-transformers
+langchain-community
