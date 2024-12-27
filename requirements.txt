@@ -3,3 +3,4 @@ langchain
 chromadb
 sentence-transformers
 langchain-community
+flask
