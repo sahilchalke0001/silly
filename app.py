@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+import gradio as gr
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -6,8 +6,6 @@ import os
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_community.vectorstores import Chroma
-
-app = Flask(__name__)
 
 def initialize_llm():
     llm = ChatGroq(
@@ -54,14 +52,11 @@ else:
     vector_db = Chroma(persist_directory=db_path, embedding_function=embeddings)
 qa_chain = setup_qa_chain(vector_db, llm)
 
-@app.route('/ask', methods=['POST'])
-def ask():
-    query = request.json.get('query')
-    if query.lower() == "exit":
-        return jsonify({"response": "Take Care of yourself, Goodbye!"})
-
+# Gradio Interface
+def chatbot_interface(query):
     response = qa_chain.run(query)
-    return jsonify({"response": response})
+    return response
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+# Launch Gradio App on port 5000
+app = gr.Interface(fn=chatbot_interface, inputs="text", outputs="text")
+app.launch(server_name="0.0.0.0", server_port=5000)
