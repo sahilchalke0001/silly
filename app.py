@@ -1,10 +1,15 @@
-from langchain.embeddings import HuggingFaceBgeEmbeddings
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
-from langchain.vectorstores import Chroma
+
+
+
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
+
+from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain_community.vectorstores import Chroma
+
 def initialize_llm():
   llm = ChatGroq(
     temperature = 0,
